@@ -33,23 +33,4 @@
 #
 ###########################################################################
 
-if( UNIX )
-    add_compile_options( -Wall -Wextra -Werror -Weffc++ )
-endif()
-
-set( _target ansakLib )
-set( _interface ../interface )
-
-set( _targetSrc )
-
-macro(collect_subdirectory sub_path)
-    # for files in sub_path/*cxx
-    FILE(GLOB subdir_children ${sub_path}/*cxx)
-    list(APPEND _targetSrc ${subdir_children})
-endmacro()
-
-collect_subdirectory( primitives )
-message("collected srcs: ${_targetSrc}")
-
-add_library( ${_target} STATIC ${_targetSrc} )
-target_include_directories( ${_target} PUBLIC ${_interface} )
+add_subdirectory( primitives )

@@ -52,3 +52,5 @@ target_link_libraries( ${_target} PRIVATE ${_privLibs} )
 SETUP_TO_EXECUTE_GTEST( ${_target} )
 
 add_test( NAME ${_targetTest} COMMAND ${_target} )
+
+add_subdirectory( unit )

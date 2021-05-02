@@ -33,23 +33,22 @@
 #
 ###########################################################################
 
-if( UNIX )
-    add_compile_options( -Wall -Wextra -Werror -Weffc++ )
-endif()
+set( _target test-Primitives )
+set( _targetTest primitivesTest )
 
-set( _target ansakLib )
-set( _interface ../interface )
+set( _interface ../../../interface )
 
-set( _targetSrc )
+set( _privLibraries ansakLib ${ANSAK_STRING_LIB} gtest_main )
 
-macro(collect_subdirectory sub_path)
-    # for files in sub_path/*cxx
-    FILE(GLOB subdir_children ${sub_path}/*cxx)
-    list(APPEND _targetSrc ${subdir_children})
-endmacro()
+set( _targetSrc file_path_test.cxx
+                nullptr_exception_test.cxx
+                parse_args_test.cxx
+                runtime_exception_test.cxx
+                time_stamp_test.cxx )
 
-collect_subdirectory( primitives )
-message("collected srcs: ${_targetSrc}")
-
-add_library( ${_target} STATIC ${_targetSrc} )
+add_executable( ${_target} ${_targetSrc} )
 target_include_directories( ${_target} PUBLIC ${_interface} )
+target_link_libraries( ${_target} PRIVATE ${_privLibraries} )
+SETUP_TO_EXECUTE_GTEST( ${_target} )
+
+add_test( NAME ${_targetTest} COMMAND ${_target} )
