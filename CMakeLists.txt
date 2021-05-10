@@ -38,7 +38,7 @@
 # Be sure to update the gtest sub-module so the unit tests will work!
 
 # If you have gcov and lcov installed on a Linux system, code coverage is provided via
-#   cmake -DCMAKE_BUILD_TYPE=Coverage for this target to work properly
+#   cmake -DCMAKE_BUILD_TYPE=Debug -DCOVERAGE=1 for this target to work properly
 
 # On MS-Windows, this project requires VS2012 or later to use it, requires VS2015
 # or later to run the Unit Tests (If you use CLANG your mileage will CERTAINLY vary.)
@@ -63,13 +63,13 @@ if(TEST_ANSAKSTRING OR _ansakRoot)
   set( _useUnitTests 1 )
 endif() 
 
-set( _ansakBuildType "notCoverage")
+set( _ansakBuildType "release")
 if( CMAKE_BUILD_TYPE )
     string( TOLOWER "${CMAKE_BUILD_TYPE}" _ansakBuildType )
 endif()
 
 if( CMAKE_GENERATOR MATCHES "Visual Studio" )
-    if( _ansakBuildType STREQUAL coverage )
+    if(COVERAGE)
         message( FATAL_ERROR "Coverage is not available in Visual Studio Builds." )
     endif()
     if( _useUnitTests AND ${CMAKE_GENERATOR} STRLESS "Visual Studio 14 2015" )
@@ -79,11 +79,9 @@ if( CMAKE_GENERATOR MATCHES "Visual Studio" )
 endif()
 
 #*************************************************************************************************************
-if( ${_ansakBuildType} STREQUAL coverage )
-    if( NOT _useUnitTests )
-        message( "Coverage builds require unit tests to be active." )
-        set( _useUnitTests 1 )
-    endif()
+if(COVERAGE AND NOT _useUnitTests )
+    message( "Coverage builds require unit tests to be active." )
+    set( _useUnitTests 1 )
 endif()
 ##############################################################################################################
 
@@ -94,11 +92,8 @@ if( _ansakRoot )
     endif()
     if( _useUnitTests )
         include( CTest )
-        if( _ansakBuildType STREQUAL coverage )
-            if( NOT UNIX )
-                message( "Trying to build code coverage on a non-Linux system isn't going to end well." )
-            endif()
-            include( CodeCoverage )
+        if(COVERAGE AND NOT UNIX)
+            message( "Trying to build code coverage on a non-Linux system isn't going to end well." )
         endif()
         add_subdirectory( submods )
     endif()
@@ -114,8 +109,12 @@ if( UNIX )
     set( CMAKE_CXX_STANDARD_REQUIRED ON )
     add_compile_options( -Wall -Wextra -Werror )
     if( COVERAGE )
-        add_compile_options( -O0 -fprofile-arcs -ftest-coverage )
+        add_compile_options( -g -O0 -fprofile-arcs -ftest-coverage )
+        include( CodeCoverage )
         SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs -ftest-coverage -lgcov" )
+        APPEND_COVERAGE_COMPILER_FLAGS()
+        SETUP_TARGET_FOR_COVERAGE_LCOV(NAME coverage
+                                       EXECUTABLE ctest -C ${ROOT_DIR}/CTestTestFile.cmake)
     endif()
     if( _isGnu )
         add_compile_options( -Wno-missing-field-initializers )
