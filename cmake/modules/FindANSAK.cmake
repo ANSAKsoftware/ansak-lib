@@ -362,6 +362,9 @@ get_filename_component(_include_path "${_file_dir}" DIRECTORY)        # location
 # for standard Unix-style locations, ANSAK_INCLUDE is blank and won't add -I elements
 if(_include_path STREQUAL "/usr/include" OR _include_path STREQUAL "/usr/local/include")
     message(VERBOSE "Derived include path, ${_include_path}, is a standard location, leaving ANSAK_INCLUDE unset")
+    if (CMAKE_GENERATOR STREQUAL "Xcode")
+        message(WARNING "Derived path, ${_include_path}, will be assume by ${CMAKE_GENERATOR} to be from a MacOSX SDK.")
+    endif()
 else()
     message(VERBOSE "Derived include path is a non-standard location, setting ANSAK_INCLUDE to \"${_include_path}\"")
     set(ANSAK_INCLUDE "${_include_path}" CACHE PATH "ANSAK include root")
