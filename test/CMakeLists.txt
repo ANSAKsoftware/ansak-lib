@@ -33,9 +33,6 @@
 #
 ###########################################################################
 
-set( _target test-initTest )
-set( _targetTest initTest )
-
 MACRO( SETUP_TO_EXECUTE_GTEST TestTarget )
     if( WIN32 AND BUILD_SHARED_LIBS )
       add_custom_command( TARGET ${TestTarget} POST_BUILD
@@ -43,6 +40,9 @@ MACRO( SETUP_TO_EXECUTE_GTEST TestTarget )
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gtest_main> ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR})
     endif()
 ENDMACRO()
+
+set( _target test-initTest )
+set( _targetTest initTest )
 
 set( _privLibs ${ANSAK_STRING_LIB} gtest_main )
 

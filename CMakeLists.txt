@@ -57,6 +57,13 @@ if(_ansakRoot)
           0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules )
 endif()
 
+find_package(ANSAK REQUIRED)
+
+if (ANSAK_INCLUDE)
+    message("ANSAK_INCLUDE has over-ride value, ${ANSAK_INCLUDE}, adding to include path")
+    include_directories( AFTER SYSTEM "${ANSAK_INCLUDE}" )
+endif()
+
 ##############################################################################################################
 set( _useUnitTests 0 )
 if(TEST_ANSAKSTRING OR _ansakRoot)
@@ -120,8 +127,6 @@ if( UNIX )
         add_compile_options( -Wno-missing-field-initializers )
     endif()
 endif()
-
-find_package(ANSAK REQUIRED)
 
 add_subdirectory(source)
 add_subdirectory(test)
