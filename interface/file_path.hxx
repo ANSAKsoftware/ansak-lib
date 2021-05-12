@@ -174,6 +174,7 @@ public:
     bool isReal() const { return m_isValid && m_isNative; }
     bool isRelative() const { return m_isValid && m_isRelative; }
     bool isRoot() const { return m_isRoot; }
+    bool isOldDOSPath() const { return m_hasDriveColon; }
     bool isUNCPath() const { return m_isUNC; }
 
 private:

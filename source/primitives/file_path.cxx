@@ -158,7 +158,7 @@ FilePath FilePath::invalidPath()
     FilePath parentOfRoot;
     parentOfRoot.m_isRelative = parentOfRoot.m_isRoot =
         parentOfRoot.m_isNative = parentOfRoot.m_isValid =
-        parentOfRoot.m_isUNC = false;
+        parentOfRoot.m_hasDriveColon = parentOfRoot.m_isUNC = false;
     return parentOfRoot;
 }
 
