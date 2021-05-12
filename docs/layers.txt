@@ -1,0 +1,76 @@
+Library-by-library dependencies.
+
++----------------------------------------------------------------------------+
+|                                                                            |
+|                               ansak-sqlite                +----------------+
+|                                                           | SQLite3        |
++-----------------------------------------------------------+----------------+
+|                                                                            |
+|                                 ansak-lib                                  |
+|                                                                            |
++----------------------------------------------------------------------------+
+|                                                                            |
+|                                ansak-string                                |
+|                                                                            |
++----------------------------------------------------------------------------+
+
+Drill-down dependencies
+
+ansak-string and ansak-sqlite are pretty simple, ansak-lib not so much:
+
+
+
+
+
+
+
++----------------------------------------------------------------------------+
+|                                                                            |
+|         ansak-lib: config :: Config, ConfigIO, ConfigTypes                 |
+|                                                                            |
++----------------------------------------------------------------------------+
+|                                                                            |
+|         ansak-lib: config :: Config, ConfigIO, ConfigTypes                 |
+|                                                                            |
++----------------------------------------------------------------------------+
+|                                                                            |
+|         ansak-lib: file-tools :: FileOfLines, TempDirectory                |
+|                                                                            |
++----------------------------------------------------------------------------+
+|                                                                            |
+| ansak-lib: file :: FileHandle, FileHandleException, FileSystemPath         |
+|                                      +-------------------------------------+
+|                                      | ansak-lib OperatingSystemPrimitives | --+
++--------------------------------------+-------------------------------------+   |
+|                                                                            |   |
+| ansak-lib: primitives :: FilePath, NullPtrException, ParseArgs,            |   |
+|                          RuntimeException, TimeStamp                       |   |
+|                                                                            |   |
++----------------------------------------------------------------------------+   |
+                                                                                 |
+                                                                                 v
+FilePath is a string that might or might not refer to a         +----------------------------+
+point on a file system.                                         | pathExists                 |
+FileSystemPath is a string that can refer to a real place       | pathIsFile                 |
+on the file system the library is currently running on.         | pathIsDir                  |
+                                                                | fileSize                   |
+                                                                | lastModTime                |
+                                                                | getCrurentWorkingDirectory |
+                                                                | createDirectory            |
+                                       +------------------------+ removeDirectory            +--------------------------+
+                                       | Linux:                 | createFile                 | Win32:                   |
+                                       |  LinuxDirectoryScanner | move                       |  WindowsRegKey           |
+                                       +------------------------+ remove                     |  WindowsDirectoryScanner |
+                                                                | create                     +--------------------------+
+                                                                | open                       |
+TODO: FilePath needs to take on MINGW/CYGWIN adaptations of     | fileSize                   |
+Windows-style paths to a more Linux-like world                  | close                      |
+ * handling/suborning : paths                                   | seek                       |
+ * dealing with either kind of slash                            | read                       |
+                                                                | write                      |
+                                                                | getTempFilePath            |
+                                                                | getEnvironmentVariable     |
+                                                                | getProcessID               |
+                                                                | errorAsString              |
+                                                                | newPathIterator            |
+                                                                +-----------------------------
