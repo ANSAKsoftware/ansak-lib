@@ -38,7 +38,7 @@ set( _targetTest primitivesTest )
 
 set( _interface ../../../interface )
 
-set( _privLibraries ansakLib ${ANSAK_STRING_LIB} gtest_main )
+set( _privLibraries primitives ${ANSAK_STRING_LIB} gtest_main )
 
 set( _targetSrc file_path_test.cxx
                 nullptr_exception_test.cxx

@@ -61,8 +61,10 @@ find_package(ANSAK REQUIRED)
 
 if (ANSAK_INCLUDE)
     message("ANSAK_INCLUDE has over-ride value, ${ANSAK_INCLUDE}, adding to include path")
-    include_directories( AFTER SYSTEM "${ANSAK_INCLUDE}" )
+    include_directories( AFTER SYSTEM "${ANSAK_INCLUDE}")
 endif()
+include_directories( AFTER SYSTEM "${PROJECT_SOURCE_DIR}/interface"
+                                  "${PROJECT_SOURCE_DIR}/source/include" )
 
 ##############################################################################################################
 set( _useUnitTests 0 )

@@ -33,14 +33,11 @@
 #
 ###########################################################################
 
-if( UNIX )
-    add_compile_options( -Wall -Wextra -Werror -Weffc++ )
-endif()
+set( _target primitives )
 
-# collect_subdirectory( primitives )
-add_subdirectory( primitives )
-
-set( _target ansakLib )
-
-add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>)
-target_link_libraries( ${_target} ${PRIMITIVIES_LIB} )
+set( _target_src file_path.cxx
+                 nullptr_exception.cxx
+                 parse_args.cxx
+                 runtime_exception.cxx
+                 time_stamp.cxx )
+add_library( ${_target} OBJECT ${_target_src} )
