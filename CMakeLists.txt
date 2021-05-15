@@ -130,5 +130,6 @@ if( UNIX )
     endif()
 endif()
 
-add_subdirectory(source)
-add_subdirectory(test)
+add_subdirectory( source )
+add_subdirectory( mock )
+add_subdirectory( test )

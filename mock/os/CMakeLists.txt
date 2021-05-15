@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# Copyright (c) 2021, Arthur N. Klassen
+# Copyright (c) 2017, Arthur N. Klassen
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,14 +33,11 @@
 #
 ###########################################################################
 
-if( UNIX )
-    add_compile_options( -Wall -Wextra -Werror -Weffc++ )
-endif()
+set( _target mock-os )
+set( _targetSrc mock_operating_system.cxx )
 
-add_subdirectory( primitives )
-add_subdirectory( os )
-
-set( _target ansakLib )
-
-add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>
-                               $<TARGET_OBJECTS:osLayer> )
+add_library( ${_target} STATIC ${_targetSrc} )
+target_link_libraries( ${_target} PUBLIC "${ANSAK_STRING_LIB}"
+                                         primitives
+                                         gmock gmock_main
+                                         gtest gtest_main )

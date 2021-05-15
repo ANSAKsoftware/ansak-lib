@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# Copyright (c) 2021, Arthur N. Klassen
+# Copyright (c) 2017, Arthur N. Klassen
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,14 +33,7 @@
 #
 ###########################################################################
 
-if( UNIX )
-    add_compile_options( -Wall -Wextra -Werror -Weffc++ )
-endif()
+set( _target osLayer )
+set( _targetSrc os_layer_linux.cxx linux_directory_scanner.cxx )
 
-add_subdirectory( primitives )
-add_subdirectory( os )
-
-set( _target ansakLib )
-
-add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>
-                               $<TARGET_OBJECTS:osLayer> )
+add_library( ${_target} OBJECT ${_targetSrc} )

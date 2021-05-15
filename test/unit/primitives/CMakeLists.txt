@@ -36,8 +36,6 @@
 set( _target test-Primitives )
 set( _targetTest primitivesTest )
 
-set( _interface ../../../interface )
-
 set( _privLibraries primitives ${ANSAK_STRING_LIB} gtest_main )
 
 set( _targetSrc file_path_test.cxx
@@ -47,7 +45,6 @@ set( _targetSrc file_path_test.cxx
                 time_stamp_test.cxx )
 
 add_executable( ${_target} ${_targetSrc} )
-target_include_directories( ${_target} PUBLIC ${_interface} )
 target_link_libraries( ${_target} PRIVATE ${_privLibraries} )
 SETUP_TO_EXECUTE_GTEST( ${_target} )
 

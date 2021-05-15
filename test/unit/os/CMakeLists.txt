@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# Copyright (c) 2021, Arthur N. Klassen
+# Copyright (c) 2017, Arthur N. Klassen
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,14 +33,18 @@
 #
 ###########################################################################
 
-if( UNIX )
-    add_compile_options( -Wall -Wextra -Werror -Weffc++ )
+set( _target test-osLayer )
+set( _targetTest osLayerTest )
+
+set( _privLibraries osLayer primitives ${ANSAK_STRING_LIB} gtest_main )
+
+set( _targetSrc test_os_layer.cxx )
+if( WIN32 )
+    list( APPEND _targetSrc test_win32_registry.cxx )
 endif()
 
-add_subdirectory( primitives )
-add_subdirectory( os )
+add_executable( ${_target} ${_targetSrc} )
+target_link_libraries( ${_target} PRIVATE ${_privLibraries} )
+SETUP_TO_EXECUTE_GTEST( ${_target} )
 
-set( _target ansakLib )
-
-add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>
-                               $<TARGET_OBJECTS:osLayer> )
+add_test( NAME ${_targetTest} COMMAND ${_target} )

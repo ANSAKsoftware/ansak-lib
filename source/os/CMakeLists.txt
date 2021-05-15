@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# Copyright (c) 2021, Arthur N. Klassen
+# Copyright (c) 2017, Arthur N. Klassen
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,14 +33,10 @@
 #
 ###########################################################################
 
-if( UNIX )
-    add_compile_options( -Wall -Wextra -Werror -Weffc++ )
+if( WIN32 )
+    add_subdirectory(win32)
+elseif( UNIX )
+    add_subdirectory(linux)
+else()
+    message(FATAL_ERROR "Need platform primitives for your environment.")
 endif()
-
-add_subdirectory( primitives )
-add_subdirectory( os )
-
-set( _target ansakLib )
-
-add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>
-                               $<TARGET_OBJECTS:osLayer> )
