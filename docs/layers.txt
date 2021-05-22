@@ -30,10 +30,6 @@ ansak-string and ansak-sqlite are pretty simple, ansak-lib not so much:
 |                                                                            |
 +----------------------------------------------------------------------------+
 |                                                                            |
-|         ansak-lib: config :: Config, ConfigIO, ConfigTypes                 |
-|                                                                            |
-+----------------------------------------------------------------------------+
-|                                                                            |
 |         ansak-lib: file-tools :: FileOfLines, TempDirectory                |
 |                                                                            |
 +----------------------------------------------------------------------------+
