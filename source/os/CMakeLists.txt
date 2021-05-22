@@ -34,9 +34,9 @@
 ###########################################################################
 
 if( WIN32 )
-    add_subdirectory(win32)
+    add_subdirectory( win32 )
 elseif( UNIX )
-    add_subdirectory(linux)
+    add_subdirectory( linux )
 else()
-    message(FATAL_ERROR "Need platform primitives for your environment.")
+    message( FATAL_ERROR "Need platform primitives for your environment." )
 endif()

@@ -39,8 +39,10 @@ endif()
 
 add_subdirectory( primitives )
 add_subdirectory( os )
+add_subdirectory( file )
 
 set( _target ansakLib )
 
 add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>
-                               $<TARGET_OBJECTS:osLayer> )
+                               $<TARGET_OBJECTS:osLayer>
+                               $<TARGET_OBJECTS:file> )

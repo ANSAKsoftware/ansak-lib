@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# Copyright (c) 2021, Arthur N. Klassen
+# Copyright (c) 2017, Arthur N. Klassen
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,15 @@
 #
 ###########################################################################
 
-add_subdirectory( primitives )
-add_subdirectory( os )
-add_subdirectory( file )
+cmake_minimum_required(VERSION 3.1)
+
+set( _target mock-file )
+set( _targetSrc mock_file_system_path.cxx
+                mock_file_handle.cxx
+                mock_file_handle_exception.cxx )
+
+add_library( ${_target} ${_targetSrc} )
+target_link_libraries( ${_target} PUBLIC "${ANSAK_STRING_LIB}"
+                                         primitives
+                                         gmock gmock_main
+                                         gtest gtest_main )

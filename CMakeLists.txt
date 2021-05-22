@@ -45,40 +45,40 @@
 # Unit tests will be suppressed for VS2012 (some C++11 features used for those unit tests
 # are incompatible with the VS2012 compiler).
 
-cmake_minimum_required(VERSION 3.1)
-project(ansakLib)
+cmake_minimum_required( VERSION 3.1 )
+project( ansakLib )
 
 set( _ansakRoot 0 )
 if( "${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}" )
     set( _ansakRoot 1 )
 endif()
-if(_ansakRoot)
+if( _ansakRoot )
     list( INSERT CMAKE_MODULE_PATH
           0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules )
 endif()
 
-find_package(ANSAK REQUIRED)
+find_package( ANSAK REQUIRED )
 
-if (ANSAK_INCLUDE)
-    message("ANSAK_INCLUDE has over-ride value, ${ANSAK_INCLUDE}, adding to include path")
-    include_directories( AFTER SYSTEM "${ANSAK_INCLUDE}")
+if ( ANSAK_INCLUDE )
+    message( "ANSAK_INCLUDE has over-ride value, ${ANSAK_INCLUDE}, adding to include path" )
+    include_directories( AFTER SYSTEM "${ANSAK_INCLUDE}" )
 endif()
 include_directories( AFTER SYSTEM "${PROJECT_SOURCE_DIR}/interface"
                                   "${PROJECT_SOURCE_DIR}/source/include" )
 
 ##############################################################################################################
 set( _useUnitTests 0 )
-if(TEST_ANSAKSTRING OR _ansakRoot)
+if( TEST_ANSAKSTRING OR _ansakRoot )
   set( _useUnitTests 1 )
 endif() 
 
-set( _ansakBuildType "release")
+set( _ansakBuildType "release" )
 if( CMAKE_BUILD_TYPE )
     string( TOLOWER "${CMAKE_BUILD_TYPE}" _ansakBuildType )
 endif()
 
 if( CMAKE_GENERATOR MATCHES "Visual Studio" )
-    if(COVERAGE)
+    if( COVERAGE )
         message( FATAL_ERROR "Coverage is not available in Visual Studio Builds." )
     endif()
     if( _useUnitTests AND ${CMAKE_GENERATOR} STRLESS "Visual Studio 14 2015" )
@@ -88,7 +88,7 @@ if( CMAKE_GENERATOR MATCHES "Visual Studio" )
 endif()
 
 #*************************************************************************************************************
-if(COVERAGE AND NOT _useUnitTests )
+if( COVERAGE AND NOT _useUnitTests )
     message( "Coverage builds require unit tests to be active." )
     set( _useUnitTests 1 )
 endif()
@@ -101,7 +101,7 @@ if( _ansakRoot )
     endif()
     if( _useUnitTests )
         include( CTest )
-        if(COVERAGE AND NOT UNIX)
+        if( COVERAGE AND NOT UNIX )
             message( "Trying to build code coverage on a non-Linux system isn't going to end well." )
         endif()
         add_subdirectory( submods )
@@ -122,8 +122,8 @@ if( UNIX )
         include( CodeCoverage )
         SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs -ftest-coverage -lgcov" )
         APPEND_COVERAGE_COMPILER_FLAGS()
-        SETUP_TARGET_FOR_COVERAGE_LCOV(NAME coverage
-                                       EXECUTABLE ctest -C ${ROOT_DIR}/CTestTestFile.cmake)
+        SETUP_TARGET_FOR_COVERAGE_LCOV( NAME coverage
+                                        EXECUTABLE ctest -C ${ROOT_DIR}/CTestTestFile.cmake )
     endif()
     if( _isGnu )
         add_compile_options( -Wno-missing-field-initializers )

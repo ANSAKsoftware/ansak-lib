@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# Copyright (c) 2021, Arthur N. Klassen
+# Copyright (c) 2017, Arthur N. Klassen
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,18 @@
 #
 ###########################################################################
 
-add_subdirectory( primitives )
-add_subdirectory( os )
-add_subdirectory( file )
+set( _target test-file )
+set( _targetTest fileTest )
+set( _privLibraries file primitives ${ANSAK_STRING_LIB} )
+set( _mockLibraries mock-os gmock_main )
+
+set( _targetSrc file_system_path_test.cxx
+                file_handle_test.cxx )
+
+add_executable( ${_target} ${_targetSrc} )
+target_include_directories( ${_target} PRIVATE "${PROJECT_SOURCE_DIR}/mock" )
+target_link_libraries( ${_target} PRIVATE ${_privLibraries} ${_mockLibraries} )
+SETUP_TO_EXECUTE_GTEST( ${_target} )
+
+add_test( NAME ${_targetTest} COMMAND ${_target} )
+

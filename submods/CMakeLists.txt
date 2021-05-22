@@ -33,30 +33,28 @@
 #
 ###########################################################################
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required( VERSION 3.1 )
 
 if( UNIX )
-    set_directory_properties(PROPERTIES COMPILE_FLAGS -Wno-error)
+    set_directory_properties( PROPERTIES COMPILE_FLAGS -Wno-error )
 endif()
 
 # bring in google_test
-if(NOT (TARGET "gmock" OR TARGET "gtest"))
+if( NOT ( TARGET "gmock" OR TARGET "gtest" ) )
     if( WIN32 )
         set( BUILD_SHARED_LIBS on )
     endif()
-    add_subdirectory(googletest)
+    add_subdirectory( googletest )
 
     if( WIN32 )
-        set(CompilerFlags
-                CMAKE_CXX_FLAGS
-                CMAKE_CXX_FLAGS_DEBUG
-                CMAKE_CXX_FLAGS_RELEASE
-                CMAKE_C_FLAGS
-                CMAKE_C_FLAGS_DEBUG
-                CMAKE_C_FLAGS_RELEASE
-                )
-        foreach(CompilerFlag ${CompilerFlags})
-          string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+        set( CompilerFlags CMAKE_CXX_FLAGS
+                           CMAKE_CXX_FLAGS_DEBUG
+                           CMAKE_CXX_FLAGS_RELEASE
+                           CMAKE_C_FLAGS
+                           CMAKE_C_FLAGS_DEBUG
+                           CMAKE_C_FLAGS_RELEASE )
+        foreach( CompilerFlag ${CompilerFlags} )
+            string( REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}" )
         endforeach()
     endif()
 endif()
