@@ -33,32 +33,15 @@
 #
 ###########################################################################
 
-MACRO( SETUP_TO_EXECUTE_GTEST TestTarget )
-    if( WIN32 )
-      add_custom_command( TARGET ${TestTarget} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gtest>      ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gtest_main> ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gmock>      ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gmock_main> ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR} )
-    endif()
-ENDMACRO()
+set( _target mock-filetools )
+set( _targetSrc mock_file_of_lines_exception.cxx
+                mock_file_of_lines.cxx
+                mock_file_of_lines_core.cxx
+                mock_file_of_lines_iterator.cxx )
 
-if( WIN32 )
-  set_directory_properties( PROPERTIES COMPILE_DEFINITIONS GTEST_LINKED_AS_SHARED_LIBRARY
-                                       COMPILE_OPTIONS "/wd\"4275\"" )
-endif()
-
-set( _target test-initTest )
-set( _targetTest initTest )
-
-set( _privLibs ${ANSAK_STRING_LIB} gtest_main )
-
-set( _targetSrc init_test.cxx )
-add_executable( ${_target} ${_targetSrc} )
-target_link_libraries( ${_target} PRIVATE ${_privLibs} )
-SETUP_TO_EXECUTE_GTEST( ${_target} )
-
-add_test( NAME ${_targetTest} COMMAND ${_target} )
-
-add_subdirectory( unit )
-add_subdirectory( integration )
+add_library( ${_target} ${_targetSrc} )
+target_link_libraries( ${_target} PUBLIC "${ANSAK_STRING_LIB}"
+                                         primitives
+                                         mock-file
+                                         gmock gmock_main
+                                         gtest gtest_main )

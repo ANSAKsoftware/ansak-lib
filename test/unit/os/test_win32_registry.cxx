@@ -45,7 +45,7 @@
 #include <gtest/gtest.h>
 #include <windows_registry_key.hxx>
 #include <runtime_exception.hxx>
-#include <string.hxx>
+#include <ansak/string.hxx>
 #include <sstream>
 
 using namespace ansak;

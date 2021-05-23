@@ -36,3 +36,4 @@
 add_subdirectory( primitives )
 add_subdirectory( os )
 add_subdirectory( file )
+add_subdirectory( file-tools )
