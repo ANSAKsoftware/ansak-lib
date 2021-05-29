@@ -35,3 +35,4 @@
 
 add_subdirectory( file )
 add_subdirectory( file-tools )
+add_subdirectory( config )

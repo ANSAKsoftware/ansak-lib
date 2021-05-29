@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# Copyright (c) 2021, Arthur N. Klassen
+# Copyright (c) 2017, Arthur N. Klassen
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,8 +33,13 @@
 #
 ###########################################################################
 
-add_subdirectory( primitives )
-add_subdirectory( os )
-add_subdirectory( file )
-add_subdirectory( file-tools )
-add_subdirectory( config )
+set( _target config )
+set( _targetSrc config_atom.cxx
+                config_io_file.cxx
+                config.cxx
+   )
+if( WIN32 )
+    list( APPEND _targetSrc config_io_registry.cxx )
+endif()
+
+add_library( ${_target} OBJECT ${_targetSrc} )

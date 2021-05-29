@@ -1,6 +1,6 @@
 ###########################################################################
 #
-# Copyright (c) 2021, Arthur N. Klassen
+# Copyright (c) 2017, Arthur N. Klassen
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,8 +33,24 @@
 #
 ###########################################################################
 
-add_subdirectory( primitives )
-add_subdirectory( os )
-add_subdirectory( file )
-add_subdirectory( file-tools )
-add_subdirectory( config )
+set( _target integration-config )
+set( _targetAsTest configIntegrationTest )
+
+set( _privLibraries config
+                    "${ANSAK_STRING_LIB}"
+                    file
+                    fileTools
+                    primitives
+                    osLayer
+                    gtest_main )
+
+set( _targetSrc config_io_file_test.cxx )
+if( WIN32 )
+    list( APPEND _targetSrc config_io_registry_test.cxx )
+endif()
+
+add_executable( ${_target} ${_targetSrc} )
+target_link_libraries( ${_target} PRIVATE ${_privLibraries} )
+SETUP_TO_EXECUTE_GTEST( ${_target} )
+
+add_test( NAME ${_targetAsTest} COMMAND ${_target} )

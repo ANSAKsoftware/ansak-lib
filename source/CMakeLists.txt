@@ -41,10 +41,12 @@ add_subdirectory( primitives )
 add_subdirectory( os )
 add_subdirectory( file )
 add_subdirectory( file-tools )
+add_subdirectory( config )
 
 set( _target ansak )
 
 add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>
                                $<TARGET_OBJECTS:osLayer>
                                $<TARGET_OBJECTS:file>
-                               $<TARGET_OBJECTS:fileTools> )
+                               $<TARGET_OBJECTS:fileTools>
+                               $<TARGET_OBJECTS:config> )
