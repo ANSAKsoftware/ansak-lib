@@ -33,8 +33,6 @@
 #
 ###########################################################################
 
-cmake_minimum_required(VERSION 3.1)
-
 set( _target mock-file )
 set( _targetSrc mock_file_system_path.cxx
                 mock_file_handle.cxx
@@ -43,5 +41,4 @@ set( _targetSrc mock_file_system_path.cxx
 add_library( ${_target} ${_targetSrc} )
 target_link_libraries( ${_target} PUBLIC "${ANSAK_STRING_LIB}"
                                          primitives
-                                         gmock gmock_main
-                                         gtest gtest_main )
+                                         gmock gmock_main )

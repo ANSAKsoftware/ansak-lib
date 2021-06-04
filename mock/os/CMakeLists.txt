@@ -36,8 +36,11 @@
 set( _target mock-os )
 set( _targetSrc mock_operating_system.cxx )
 
+if( WIN32 )
+    list( APPEND _targetSrc mock_registry.cxx )
+endif()
+
 add_library( ${_target} STATIC ${_targetSrc} )
 target_link_libraries( ${_target} PUBLIC "${ANSAK_STRING_LIB}"
                                          primitives
-                                         gmock gmock_main
-                                         gtest gtest_main )
+                                         gmock gmock_main )

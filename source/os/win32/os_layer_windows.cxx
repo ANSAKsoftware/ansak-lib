@@ -41,6 +41,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 #include "os_layer_windows.hxx"
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <ansak/string.hxx>
 
@@ -60,10 +61,9 @@ FilePath tryOutEnvironmentForPath(const char* name)
 	auto thePath = thePrimitives.getEnvironmentVariable(name);
 	if (!thePath.empty())
 	{
-		FileSystemPath tempPath(thePath);
-		if (tempPath.exists() && tempPath.isDir())
+		if (thePrimitives.pathExists(thePath) && thePrimitives.pathIsDir(thePath))
 		{
-			return tempPath.asFilePath();
+			return thePath;
 		}
 	}
 	return FilePath::invalidPath();
@@ -447,10 +447,10 @@ FilePath WindowsPrimitives::getTempFilePath() const
 		}
 	}
 
-    FileSystemPath result("C:\\TEMP");
-    if (result.exists() && result.isDir())
+    FilePath tempAsPath("C:\\TEMP");
+    if (pathExists(tempAsPath) && pathIsDir(tempAsPath))
     {
-        return result.asFilePath();
+        return tempAsPath;
     }
 
     return FilePath("C:\\WINDOWS\\TEMP");

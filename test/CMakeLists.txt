@@ -34,12 +34,19 @@
 ###########################################################################
 
 MACRO( SETUP_TO_EXECUTE_GTEST TestTarget )
-    if( WIN32 AND BUILD_SHARED_LIBS )
+    if( WIN32 )
       add_custom_command( TARGET ${TestTarget} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gtest>      ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gtest_main> ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR} )
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gtest_main> ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gmock>      ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR}
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gmock_main> ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR} )
     endif()
 ENDMACRO()
+
+if( WIN32 )
+  set_directory_properties( PROPERTIES COMPILE_DEFINITIONS GTEST_LINKED_AS_SHARED_LIBRARY
+                                       COMPILE_OPTIONS "/wd\"4275\"" )
+endif()
 
 set( _target test-initTest )
 set( _targetTest initTest )

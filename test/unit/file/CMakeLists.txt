@@ -36,7 +36,7 @@
 set( _target test-file )
 set( _targetTest fileTest )
 set( _privLibraries file primitives ${ANSAK_STRING_LIB} )
-set( _mockLibraries mock-os gmock_main )
+set( _mockLibraries mock-os gmock_main gmock )
 
 set( _targetSrc file_system_path_test.cxx
                 file_handle_test.cxx )

@@ -33,5 +33,10 @@
 #
 ###########################################################################
 
+if( WIN32 )
+  set_directory_properties( PROPERTIES COMPILE_DEFINITIONS GTEST_LINKED_AS_SHARED_LIBRARY
+                                       COMPILE_OPTIONS "/wd\"4275\"" )
+endif()
+
 add_subdirectory( os )
 add_subdirectory( file )

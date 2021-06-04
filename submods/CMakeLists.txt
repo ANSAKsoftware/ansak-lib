@@ -33,8 +33,6 @@
 #
 ###########################################################################
 
-cmake_minimum_required( VERSION 3.1 )
-
 if( UNIX )
     set_directory_properties( PROPERTIES COMPILE_FLAGS -Wno-error )
 endif()
