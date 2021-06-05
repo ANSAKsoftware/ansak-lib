@@ -54,6 +54,7 @@ public:
     ~FileSystemPathMock();
 
     MOCK_METHOD1(createDirectory, bool(FileSystemPath*));
+    MOCK_METHOD2(moveTo, bool(const FileSystemPath*, const FileSystemPath&));
     MOCK_METHOD2(remove, bool(FileSystemPath*, bool));
     MOCK_METHOD1(exists, bool(const FileSystemPath*));
     MOCK_METHOD1(isFile, bool(const FileSystemPath*));

@@ -61,6 +61,16 @@ bool FileHandleMock::shouldFailNextOpen()
     return false;
 }
 
+bool FileHandleMock::shouldFailNextCreate()
+{
+    if (m_failNextCreate)
+    {
+        m_failNextCreate = false;
+        return true;
+    }
+    return false;
+}
+
 FileHandle::~FileHandle()
 {
 }
@@ -102,6 +112,18 @@ FileHandle FileHandle::open(const FileSystemPath& path, FileHandle::OpenType)
     return result;
 }
 
+FileHandle FileHandle::create(const FileSystemPath& path, FileHandle::CreateType)
+{
+    if (FileHandleMock::getMock()->shouldFailNextCreate())
+    {
+        return FileHandle();
+    }
+
+    FileHandle result(path);
+    result.m_fh = 37u;
+    return result;
+}
+
 void FileHandle::close()
 {
     try
@@ -135,6 +157,11 @@ size_t FileHandle::read(char* dest, size_t destSize)
 void FileHandle::seek(off_t pos)
 {
     FileHandleMock::getMock()->mockSeek(this, pos);
+}
+
+size_t FileHandle::write(const char* src, size_t srcSize)
+{
+    return FileHandleMock::getMock()->mockWrite(this, src, srcSize);
 }
 
 }

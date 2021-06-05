@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2017, Arthur N. Klassen
+// Copyright (c) 2021, Arthur N. Klassen
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 //
-// 2017.04.05 - First Version
+// 2021.06.02 - First Version
 //
 //    May you do good and not evil.
 //    May you find forgiveness for yourself and forgive others.
@@ -35,41 +35,64 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 //
-// mock_file_handle.hxx -- declaration of a mock to FileHandle
+// mock_registry.cxx -- declaration of a mock to the registry access
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include <file_handle.hxx>
-#include <gmock/gmock.h>
+#include "mock_registry.hxx"
 
-namespace ansak
+using namespace testing;
+
+namespace ansak {
+
+namespace config {
+
+WindowsRegKeyMock* WindowsRegKeyMock::m_currentMock = nullptr;
+
+WindowsRegKey WindowsRegKey::open(const utf8String& key, bool createIfAbsent)
 {
+    return WindowsRegKeyMock::getMock()->mockOpen(key, createIfAbsent);
+}
 
-class FileHandleMock
+WindowsRegKey::~WindowsRegKey()
 {
-public:
-    static FileHandleMock* getMock() { return m_currentMock; }
+}
 
-    FileHandleMock()   { m_currentMock = this; }
-    ~FileHandleMock()  { m_currentMock = nullptr; }
+std::vector<std::string> WindowsRegKey::getValueNames() const
+{
+    return WindowsRegKeyMock::getMock()->mockGetValueNames(this);
+}
 
-    MOCK_METHOD1(mockSize, uint64_t(FileHandle*));
-    MOCK_METHOD3(mockRead, size_t(FileHandle*, char*, size_t));
-    MOCK_METHOD1(mockClose, void(FileHandle*));
-    MOCK_METHOD2(mockSeek, void(FileHandle*, off_t));
-    MOCK_METHOD3(mockWrite, size_t(FileHandle*, const char*, size_t));
+DWORD WindowsRegKey::getValueType(const utf8String& valueName) const
+{
+    return WindowsRegKeyMock::getMock()->mockGetValueType(this, valueName);
+}
 
-    bool shouldFailNextOpen();
-    void setFailNextOpen() { m_failNextOpen = true; };
+bool WindowsRegKey::getValue(const utf8String& valueName, DWORD& val) const
+{
+    return WindowsRegKeyMock::getMock()->mockGetValue(this, valueName, val);
+}
 
-    bool shouldFailNextCreate();
-    void setFailNextCreate() { m_failNextCreate = true; };
+bool WindowsRegKey::getValue(const utf8String& valueName, utf8String& val) const
+{
+    return WindowsRegKeyMock::getMock()->mockGetValue(this, valueName, val);
+}
 
-private:
+bool WindowsRegKey::setValue(const utf8String& valueName, DWORD val)
+{
+    return WindowsRegKeyMock::getMock()->mockSetValue(this, valueName, val);
+}
 
-    static FileHandleMock* m_currentMock;
-    bool m_failNextOpen = false;
-    bool m_failNextCreate = false;
-};
+bool WindowsRegKey::setValue(const utf8String& valueName, const utf8String& val)
+{
+    return WindowsRegKeyMock::getMock()->mockSetValue(this, valueName, val);
+}
+
+void WindowsRegKey::deleteValue(const utf8String& valueName)
+{
+    WindowsRegKeyMock::getMock()->mockDeleteValue(this, valueName);
+}
+
+}
 
 }

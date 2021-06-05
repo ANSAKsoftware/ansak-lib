@@ -34,7 +34,7 @@
 ###########################################################################
 
 if( UNIX )
-    set_directory_properties( PROPERTIES COMPILE_FLAGS -Wno-error )
+    add_compile_options( -Wno-error -Wno-maybe-uninitialized )
 endif()
 
 # bring in google_test

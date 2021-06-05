@@ -62,6 +62,11 @@ bool FileSystemPath::createDirectory(bool)
     return FileSystemPathMock::getMock()->createDirectory(this);
 }
 
+bool FileSystemPath::moveTo(const FileSystemPath& dest) const
+{
+    return FileSystemPathMock::getMock()->moveTo(this, dest);
+}
+
 bool FileSystemPath::remove(bool recursive)
 {
     return FileSystemPathMock::getMock()->remove(this, recursive);

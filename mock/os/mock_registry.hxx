@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2017, Arthur N. Klassen
+// Copyright (c) 2021, Arthur N. Klassen
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 //
-// 2017.04.05 - First Version
+// 2021.06.02 - First Version
 //
 //    May you do good and not evil.
 //    May you find forgiveness for yourself and forgive others.
@@ -35,41 +35,47 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 //
-// mock_file_handle.hxx -- declaration of a mock to FileHandle
+// mock_registry.cxx -- declaration of a mock to the registry access
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include <file_handle.hxx>
+#pragma once
+
+#include <windows_registry_key.hxx>
 #include <gmock/gmock.h>
 
 namespace ansak
 {
 
-class FileHandleMock
+namespace config
+{
+
+class WindowsRegKeyMock
 {
 public:
-    static FileHandleMock* getMock() { return m_currentMock; }
+    static WindowsRegKeyMock* getMock() { return m_currentMock; }
 
-    FileHandleMock()   { m_currentMock = this; }
-    ~FileHandleMock()  { m_currentMock = nullptr; }
+    WindowsRegKeyMock()     { m_currentMock = this; }
+    ~WindowsRegKeyMock()    { m_currentMock = nullptr; }
 
-    MOCK_METHOD1(mockSize, uint64_t(FileHandle*));
-    MOCK_METHOD3(mockRead, size_t(FileHandle*, char*, size_t));
-    MOCK_METHOD1(mockClose, void(FileHandle*));
-    MOCK_METHOD2(mockSeek, void(FileHandle*, off_t));
-    MOCK_METHOD3(mockWrite, size_t(FileHandle*, const char*, size_t));
-
-    bool shouldFailNextOpen();
-    void setFailNextOpen() { m_failNextOpen = true; };
-
-    bool shouldFailNextCreate();
-    void setFailNextCreate() { m_failNextCreate = true; };
+    MOCK_METHOD1(mockExists, bool(const utf8String&));
+    MOCK_METHOD2(mockOpen, WindowsRegKey(const utf8String&, bool));
+    MOCK_METHOD1(mockGetValueNames, WindowsRegKey::ValueNamesType(const WindowsRegKey*));
+    MOCK_METHOD2(mockGetValueType, DWORD(const WindowsRegKey*, const utf8String&));
+    MOCK_METHOD3(mockGetValue, bool(const WindowsRegKey*, const utf8String&, DWORD&));
+    MOCK_METHOD3(mockGetValue, bool(const WindowsRegKey*, const utf8String&, utf8String&));
+    MOCK_METHOD3(mockSetValue, bool(WindowsRegKey*, const utf8String&, DWORD));
+    MOCK_METHOD3(mockSetValue, bool(WindowsRegKey*, const utf8String&, const utf8String&));
+    MOCK_METHOD2(mockDeleteValue, void(WindowsRegKey*, const utf8String&));
+    MOCK_METHOD1(mockCreateSubKey, WindowsRegKey(const utf8String&));
+    MOCK_METHOD1(mockDeleteKey, void(WindowsRegKey*));
+    MOCK_METHOD1(mockGetPath, utf8String(const WindowsRegKey*));
 
 private:
 
-    static FileHandleMock* m_currentMock;
-    bool m_failNextOpen = false;
-    bool m_failNextCreate = false;
+    static WindowsRegKeyMock* m_currentMock;
 };
+
+}
 
 }
