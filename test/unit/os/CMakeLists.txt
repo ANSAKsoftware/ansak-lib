@@ -33,8 +33,8 @@
 #
 ###########################################################################
 
-set( _target test-osLayer )
-set( _targetTest osLayerTest )
+set( _target test-os )
+set( _targetTest osTest )
 
 set( _privLibraries osLayer primitives ${ANSAK_STRING_LIB} gtest_main )
 

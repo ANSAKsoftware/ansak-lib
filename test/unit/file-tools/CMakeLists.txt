@@ -33,7 +33,7 @@
 #
 ###########################################################################
 
-set( _target test-fileTools )
+set( _target test-file-tools )
 set( _targetTest fileToolsTest )
 
 set( _privLibraries fileTools primitives "${ANSAK_STRING_LIB}" )

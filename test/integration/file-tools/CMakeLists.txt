@@ -33,7 +33,7 @@
 #
 ###########################################################################
 
-set( _target integration-fileTools )
+set( _target integration-file-tools )
 set( _targetAsTest fileToolsIntegrationTest )
 set( _targetPrivateLibs fileTools file primitives "${ANSAK_STRING_LIB}" osLayer )
 set( _targetSource ifile_of_lines.cxx

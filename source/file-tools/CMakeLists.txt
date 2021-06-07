@@ -42,4 +42,4 @@ set( _targetSrc file_of_lines.cxx
                 text_file_utilities.cxx
    )
 
-add_library( ${_target} ${_targetSrc} )
+add_library( ${_target} OBJECT ${_targetSrc} )

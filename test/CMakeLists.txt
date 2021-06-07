@@ -48,8 +48,8 @@ if( WIN32 )
                                        COMPILE_OPTIONS "/wd\"4275\"" )
 endif()
 
-set( _target test-initTest )
-set( _targetTest initTest )
+set( _target test-init )
+set( _targetTest testInit )
 
 set( _privLibs ${ANSAK_STRING_LIB} gtest_main )
 

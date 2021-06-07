@@ -33,7 +33,7 @@
 #
 ###########################################################################
 
-set( _target test-Primitives )
+set( _target test-primitives )
 set( _targetTest primitivesTest )
 
 set( _privLibraries primitives ${ANSAK_STRING_LIB} gtest_main )
