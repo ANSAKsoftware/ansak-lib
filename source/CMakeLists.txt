@@ -50,3 +50,7 @@ add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>
                                $<TARGET_OBJECTS:file>
                                $<TARGET_OBJECTS:fileTools>
                                $<TARGET_OBJECTS:config> )
+
+if( SQLite3_FOUND )
+    add_subdirectory( sqlite )
+endif()

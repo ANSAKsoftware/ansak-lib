@@ -57,6 +57,7 @@ if( _ansakRoot )
           0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules )
 endif()
 
+find_package( SQLite3 )
 find_package( ANSAK REQUIRED )
 
 if ( ANSAK_INCLUDE )

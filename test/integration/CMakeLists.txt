@@ -36,3 +36,7 @@
 add_subdirectory( file )
 add_subdirectory( file-tools )
 add_subdirectory( config )
+
+if( SQLite3_FOUND )
+    add_subdirectory( sqlite )
+endif()

@@ -33,6 +33,9 @@
 ###########################################################################
 
 message( "Looking for ANSAK components..." )
+if( SQLite3_FOUND )
+    message( " ... SQLite3 found, including SQLite interface components" )
+endif()
 
 #[[
 FindANSAK
