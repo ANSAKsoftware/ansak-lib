@@ -61,7 +61,7 @@ find_package( SQLite3 )
 find_package( ANSAK REQUIRED )
 
 if ( ANSAK_INCLUDE )
-    message( "ANSAK_INCLUDE has over-ride value, ${ANSAK_INCLUDE}, adding to include path" )
+    message( "ANSAK_INCLUDE has value, ${ANSAK_INCLUDE}; adding to include path" )
     include_directories( AFTER SYSTEM "${ANSAK_INCLUDE}" )
 endif()
 include_directories( AFTER SYSTEM "${PROJECT_SOURCE_DIR}/interface"

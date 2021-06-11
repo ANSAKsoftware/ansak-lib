@@ -411,7 +411,7 @@ endif()
 
 #  we have the main library's header, do we have the lib?
 if( NOT ANSAK_LIB_HEADER STREQUAL "ANSAK_LIB_HEADER-NOTFOUND" )
-    find_library( _platform_ansak_lib _srch_lib PATHS _ansak_locator_dir DOC "ANSAK general library" )
+    find_library( _platform_ansak_lib ${_srch_lib} HINTS "${_ansak_locator_dir}" DOC "ANSAK general library" )
     if( _platform_ansak_lib STREQUAL "_platform_ansak_lib-NOTFOUND" )
         set( ANSAK_LIB_HEADER "ANSAK_LIB_HEADER-NOTFOUND" CACHE STRING "Library not present, ignoring header" FORCE )
         set( ANSAK_LIB_FOUND False CACHE BOOL "ANSAK library not found." )
@@ -432,7 +432,7 @@ endif()
 # if we have the sqlite library header, do we have SQLite3 and the lib?
 if( SQLite3_FOUND )
     if( NOT ANSAK_SQLITE_HEADER STREQUAL "ANSAK_SQLITE_HEADER-NOTFOUND" )
-        find_library( _platform_ansak_sqlite_lib _srch_sqlite_lib PATHS _ansak_locator_dir DOC "ANSAK SQLite library" )
+        find_library( _platform_ansak_sqlite_lib ${_srch_sqlite_lib} HINTS "${_ansak_locator_dir}" DOC "ANSAK SQLite library" )
         if( _platform_ansak_sqlite_lib STREQUAL "_platform_ansak_sqlite_lib-NOTFOUND" )
             set( ANSAK_SQLITE_HEADER "ANSAK_SQLITE_HEADER-NOTFOUND" CACHE STRING "SQLite library not present, ignoring header" FORCE )
             set( ANSAK_SQLITE_FOUND False CACHE  BOOL "ANSAK SQLite library not found." )
