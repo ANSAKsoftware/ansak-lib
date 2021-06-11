@@ -35,9 +35,9 @@
 
 cmake_minimum_required(VERSION 3.1)
 
-set( _target integrate-ansakSqlite )
-set( _targetAsTest ansakSqliteIntegrationTest )
-set( _targetPrivateLibs ansakSqlite ansakFileTools ansakFile ansakPrimitives ansakString ansakOSLayer )
+set( _target integration-sqlite )
+set( _targetAsTest sqliteIntegrationTest )
+set( _targetPrivateLibs ansakSqlite fileTools file primitives "${ANSAK_STRING_LIB}" osLayer )
 set( _targetSource sqliteDBTest.cxx
                    sqlitePragmaTest.cxx
                    sqliteStmtTest.cxx
@@ -45,7 +45,7 @@ set( _targetSource sqliteDBTest.cxx
 
 add_executable( ${_target} ${_targetSource} )
 target_link_libraries( ${_target}
-               PRIVATE ${SQLITE3_LIBRARIES} ${_targetPrivateLibs} gtest_main gmock )
+               PRIVATE ${_targetPrivateLibs} gtest_main gmock )
 target_include_directories( ${_target} PRIVATE ../../../source/include ${SQLITE3_INCLUDE_DIR} )
 
 SETUP_TO_EXECUTE_GTEST( ${_target} )

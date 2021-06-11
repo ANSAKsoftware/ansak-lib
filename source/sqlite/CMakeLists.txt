@@ -45,3 +45,4 @@ set( _targetSrc sqlite_db.cxx
    )
 
 add_library( ${_target} STATIC ${_targetSrc} )
+target_link_libraries( ${_target} PRIVATE "${SQLite3_LIBRARY}" )

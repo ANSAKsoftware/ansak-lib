@@ -276,7 +276,7 @@ SqliteException SqliteDB::makeNotEnoughColumnsException(int actualColumns, int c
     enforce(m_pDB != 0, "SqliteDB::makeNoResultException called on closed database");
     ostringstream os;
     os << "SQLite call received " << actualColumns
-       << (actualColumns == 1 ? "column" : "columns")
+       << (actualColumns == 1 ? " column" : " columns")
        << ", while user wanted data at index, " << columnX << ".";
     return SqliteException(m_path, m_pDB, os.str().c_str());
 }
