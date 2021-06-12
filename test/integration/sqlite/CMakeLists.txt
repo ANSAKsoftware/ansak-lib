@@ -45,14 +45,9 @@ set( _targetSource sqliteDBTest.cxx
 
 add_executable( ${_target} ${_targetSource} )
 target_link_libraries( ${_target}
-               PRIVATE ${_targetPrivateLibs} gtest_main gmock )
+               PRIVATE ${_targetPrivateLibs} gmock_main gmock )
 target_include_directories( ${_target} PRIVATE ../../../source/include ${SQLITE3_INCLUDE_DIR} )
 
 SETUP_TO_EXECUTE_GTEST( ${_target} )
-if( WIN32 )
-  add_custom_command( TARGET ${_target} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "${SQLITE3_DLL}"      ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_CFG_INTDIR})
-endif()
-
 add_test( NAME ${_targetAsTest} COMMAND ${_target} )
 

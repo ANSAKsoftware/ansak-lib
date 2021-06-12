@@ -39,7 +39,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <sqlite_db.hxx>
 #include <file_path.hxx>

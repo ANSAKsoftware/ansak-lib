@@ -34,7 +34,7 @@
 ###########################################################################
 
 if( UNIX )
-    add_compile_options( -Wno-error -Wno-maybe-uninitialized )
+    add_compile_options( -Wno-error -Wno-uninitialized )
 endif()
 
 # bring in google_test
