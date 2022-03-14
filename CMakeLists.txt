@@ -46,15 +46,11 @@
 # are incompatible with the VS2012 compiler).
 
 cmake_minimum_required( VERSION 3.1 )
-project( ansakLib )
+project( ansakLib VERSION 1.0.0 )
 
 set( _ansakRoot 0 )
 if( "${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}" )
     set( _ansakRoot 1 )
-endif()
-if( _ansakRoot )
-    list( INSERT CMAKE_MODULE_PATH
-          0 ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules )
 endif()
 
 find_package( SQLite3 )
