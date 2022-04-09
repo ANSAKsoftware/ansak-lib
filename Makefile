@@ -75,6 +75,9 @@ build/all.touch: build/build.touch config.make
 all: build/all.touch
 
 
+# except with an Xcode generator, cd build; make test will build all the tests
+# but cmake --build build --target test will not. In order to be platform
+# independent... all test targets are named here.
 test: build/all.touch
 	@for targ in integration-config \
 				 integration-file \

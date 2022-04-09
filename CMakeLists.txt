@@ -130,3 +130,7 @@ endif()
 add_subdirectory( source )
 add_subdirectory( mock )
 add_subdirectory( test )
+
+if( _ansakRoot )
+    include(packaging.cmake)
+endif()
