@@ -45,12 +45,22 @@
 # Unit tests will be suppressed for VS2012 (some C++11 features used for those unit tests
 # are incompatible with the VS2012 compiler).
 
-cmake_minimum_required( VERSION 3.1 )
+cmake_minimum_required( VERSION 3.10 )
 project( ansakLib VERSION 1.0.0 )
 
 set( _ansakRoot 0 )
 if( "${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}" )
     set( _ansakRoot 1 )
+endif()
+
+if( WIN32 )
+    if( NOT SQLite3_INCLUDE_DIR AND NOT SQLite3_LIBRARY )
+        set( SQLite3_INCLUDE_DIR C:/ProgramData/include )
+        set( SQLite3_LIBRARY C:/ProgramData/lib/${CMAKE_GENERATOR_PLATFORM}/sqlite3.lib )
+        message( "SQLite3_INCLUDE_DIR and SQLite3_LIBRARY values not set, setting default values:" )
+        message( "          SQLite3_INCLUDE_DIR = ${SQLite3_INCLUDE_DIR}" )
+        message( "          SQLite3_LIBRARY = ${SQLite3_LIBRARY}" )
+    endif()
 endif()
 
 find_package( SQLite3 )
