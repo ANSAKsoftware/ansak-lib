@@ -37,6 +37,32 @@ if( UNIX )
     add_compile_options( -Wall -Wextra -Werror -Weffc++ )
 endif()
 
+set( _allSources primitives/file_path.cxx
+                 primitives/nullptr_exception.cxx
+                 primitives/parse_args.cxx
+                 primitives/runtime_exception.cxx
+                 primitives/time_stamp.cxx
+                 file/file_system_path.cxx
+                 file/file_handle_exception.cxx
+                 file/file_handle.cxx
+                 file-tools/file_of_lines.cxx
+                 file-tools/file_of_lines_core.cxx
+                 file-tools/file_of_lines_exception.cxx
+                 file-tools/temp_directory.cxx
+                 file-tools/text_file_utilities.cxx
+                 config/config_atom.cxx
+                 config/config_io_file.cxx
+                 config/config.cxx
+                 )
+if( WIN32 )
+    list(APPEND _allSources os/win32/os_layer_windows.cxx
+                            os/win32/windows_directory_scanner.cxx
+                            os/win32/windows_registry_key.cxx )
+else()
+    list(APPEND _allSources os/linux/os_layer_linux.cxx
+                            os/linux/linux_directory_scanner.cxx )
+endif()
+
 add_subdirectory( primitives )
 add_subdirectory( os )
 add_subdirectory( file )
@@ -45,28 +71,10 @@ add_subdirectory( config )
 
 set( _target ansak )
 
-if( APPLE )
+if( APPLE OR BUILD_PACKAGE_LIB )
     # a non-scaling hack requried because the else() clause (the correct
     # way) causes xcodebuild to rm libansak.a after many schemes complete.
-    add_library( ${_target} STATIC primitives/file_path.cxx
-                                   primitives/nullptr_exception.cxx
-                                   primitives/parse_args.cxx
-                                   primitives/runtime_exception.cxx
-                                   primitives/time_stamp.cxx
-                                   os/linux/os_layer_linux.cxx
-                                   os/linux/linux_directory_scanner.cxx
-                                   file/file_system_path.cxx
-                                   file/file_handle_exception.cxx
-                                   file/file_handle.cxx
-                                   file-tools/file_of_lines.cxx
-                                   file-tools/file_of_lines_core.cxx
-                                   file-tools/file_of_lines_exception.cxx
-                                   file-tools/temp_directory.cxx
-                                   file-tools/text_file_utilities.cxx
-                                   config/config_atom.cxx
-                                   config/config_io_file.cxx
-                                   config/config.cxx
-                                   )
+    add_library( ${_target} STATIC ${_allSources} )
 else()
     add_library( ${_target} STATIC $<TARGET_OBJECTS:primitives>
                                    $<TARGET_OBJECTS:osLayer>

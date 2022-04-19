@@ -79,6 +79,7 @@ HEADERS_TO_INSTALL = [
     (os.path.join('interface', 'temp_directory.hxx'), 'include_ansak'),
     (os.path.join('interface', 'time_stamp.hxx'), 'include_ansak')]
 
-LIBS_TO_INSTALL = ['ansak.lib', 'ansakSqlite.lib']
+LIBS_TO_INSTALL = [(None, 'ansak.lib'),
+                   ('sqlite', 'ansakSqlite.lib')]
 
 PACKAGE_NAME = 'ansak-lib-setup.exe'

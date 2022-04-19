@@ -69,6 +69,7 @@ GRANDPARENT = '..\\..'
 CONF = '-C'
 GEN = '-G'
 ARCH = '-A'
+DBUILDPKGLIB = '-DBUILD_PACKAGE_LIB=1'
 
 
 class Proc:
@@ -258,7 +259,7 @@ class Maker:
         def cmake_gen(build_dir, arch):
             if not os.path.isfile('CMakeCache.txt'):
                 return Proc(CMD, C, CMAKE, GRANDPARENT, GEN, GENERATOR, ARCH,
-                            arch, cwd=build_dir, env=env).run()
+                            arch, DBUILDPKGLIB, cwd=build_dir, env=env).run()
             return 0
 
         run_or_die(lambda: cmake_gen(self.win32_dir_, 'Win32'))
@@ -319,38 +320,44 @@ class Maker:
             for hpair in HEADERS_TO_INSTALL:
                 shutil.copy2(hpair[0], paths[hpair[1]])
 
-            for lib in LIBS_TO_INSTALL:
-                pdb = '.'.join([lib.split('.')[0], 'pdb'])
-                shutil.copy2(os.path.join('build', 'Win32', 'source', 'Release', lib),
+            for sub_dir, lib in LIBS_TO_INSTALL:
+                pdbf = '.'.join([lib.split('.')[0], 'pdb'])
+                win32_base = os.path.join('build', 'Win32', 'source')
+                if sub_dir is not None:
+                    win32_base = os.path.join(win32_base, sub_dir)
+                shutil.copy2(os.path.join(win32_base, 'Release', lib),
                              paths['lib_win32_release'])
-                shutil.copy2(os.path.join('build', 'Win32', 'source', 'Debug', lib),
+                shutil.copy2(os.path.join(win32_base, 'Debug', lib),
                              paths['lib_win32_debug'])
-                shutil.copy2(os.path.join('build', 'Win32', 'source', 'Debug', pdb),
+                shutil.copy2(os.path.join(win32_base, 'Debug', pdbf),
                              paths['lib_win32_debug'])
-                shutil.copy2(os.path.join('build', 'Win32', 'source', 'RelWithDebInfo',
+                shutil.copy2(os.path.join(win32_base, 'RelWithDebInfo',
                                           lib),
                              paths['lib_win32_relwithdebinfo'])
-                shutil.copy2(os.path.join('build', 'Win32', 'source', 'RelWithDebInfo',
-                                          pdb),
+                shutil.copy2(os.path.join(win32_base, 'RelWithDebInfo',
+                                          pdbf),
                              paths['lib_win32_relwithdebinfo'])
-                shutil.copy2(os.path.join('build', 'Win32', 'source', 'Release', lib),
+                shutil.copy2(os.path.join(win32_base, 'Release', lib),
                              paths['lib_win32_release'])
-                shutil.copy2(os.path.join('build', 'x64', 'source', 'MinSizeRel', lib),
+                x64_base = os.path.join('build', 'x64', 'source')
+                if sub_dir is not None:
+                    x64_base = os.path.join(x64_base, sub_dir)
+                shutil.copy2(os.path.join(x64_base, 'MinSizeRel', lib),
                              paths['lib_win32_minsizerel'])
 
-                shutil.copy2(os.path.join('build', 'x64', 'source', 'Release', lib),
+                shutil.copy2(os.path.join(x64_base, 'Release', lib),
                              paths['lib_x64_release'])
-                shutil.copy2(os.path.join('build', 'x64', 'source', 'Debug', lib),
+                shutil.copy2(os.path.join(x64_base, 'Debug', lib),
                              paths['lib_x64_debug'])
-                shutil.copy2(os.path.join('build', 'x64', 'source', 'Debug', pdb),
+                shutil.copy2(os.path.join(x64_base, 'Debug', pdbf),
                              paths['lib_x64_debug'])
-                shutil.copy2(os.path.join('build', 'x64', 'source', 'RelWithDebInfo',
+                shutil.copy2(os.path.join(x64_base, 'RelWithDebInfo',
                                           lib),
                              paths['lib_x64_relwithdebinfo'])
-                shutil.copy2(os.path.join('build', 'x64', 'source', 'RelWithDebInfo',
-                                          pdb),
+                shutil.copy2(os.path.join(x64_base, 'RelWithDebInfo',
+                                          pdbf),
                              paths['lib_x64_relwithdebinfo'])
-                shutil.copy2(os.path.join('build', 'x64', 'source', 'MinSizeRel', lib),
+                shutil.copy2(os.path.join(x64_base, 'MinSizeRel', lib),
                              paths['lib_x64_minsizerel'])
             self.step_performed_ = True
         except PermissionError as epe:
@@ -374,19 +381,19 @@ class Maker:
             rmdirIfEmpty(paths['include_ansak'])
             rmdirIfEmpty(paths['include_root'])
 
-            for lib in LIBS_TO_INSTALL:
-                pdb = '.'.join([lib.split('.')[0], 'pdb'])
+            for _, lib in LIBS_TO_INSTALL:
+                pdbf = '.'.join([lib.split('.')[0], 'pdb'])
                 rm_f(os.path.join(paths['lib_win32_release'], lib))
                 rm_f(os.path.join(paths['lib_win32_debug'], lib))
-                rm_f(os.path.join(paths['lib_win32_debug'], pdb))
+                rm_f(os.path.join(paths['lib_win32_debug'], pdbf))
                 rm_f(os.path.join(paths['lib_win32_relwithdebinfo'], lib))
-                rm_f(os.path.join(paths['lib_win32_relwithdebinfo'], pdb))
+                rm_f(os.path.join(paths['lib_win32_relwithdebinfo'], pdbf))
                 rm_f(os.path.join(paths['lib_win32_minsizerel'], lib))
                 rm_f(os.path.join(paths['lib_x64_release'], lib))
                 rm_f(os.path.join(paths['lib_x64_debug'], lib))
-                rm_f(os.path.join(paths['lib_x64_debug'], pdb))
+                rm_f(os.path.join(paths['lib_x64_debug'], pdbf))
                 rm_f(os.path.join(paths['lib_x64_relwithdebinfo'], lib))
-                rm_f(os.path.join(paths['lib_x64_relwithdebinfo'], pdb))
+                rm_f(os.path.join(paths['lib_x64_relwithdebinfo'], pdbf))
                 rm_f(os.path.join(paths['lib_x64_minsizerel'], lib))
             rmdirIfEmpty(paths['lib_win32_release'])
             rmdirIfEmpty(paths['lib_win32_debug'])
@@ -439,39 +446,39 @@ class Maker:
         for hpair in HEADERS_TO_INSTALL:
             shutil.copy2(hpair[0], nsis_dests[hpair[1]])
 
-        for lib in LIBS_TO_INSTALL:
-            pdb = '.'.join([lib.split('.')[0], 'pdb'])
+        for sub_dir, lib in LIBS_TO_INSTALL:
+            pdbf = '.'.join([lib.split('.')[0], 'pdb'])
 
-            shutil.copy2(os.path.join('build', 'Win32', 'source', 'Release', lib),
+            win32_base = os.path.join('build', 'Win32', 'source')
+            if sub_dir is not None:
+                win32_base = os.path.join(win32_base, sub_dir)
+            shutil.copy2(os.path.join(win32_base, 'Release', lib),
                          nsis_dests['lib_win32_release'])
-            shutil.copy2(os.path.join('build', 'Win32', 'source', 'Debug', lib),
+            shutil.copy2(os.path.join(win32_base, 'Debug', lib),
                          nsis_dests['lib_win32_debug'])
-            shutil.copy2(os.path.join('build', 'Win32', 'source', 'Debug', pdb),
+            shutil.copy2(os.path.join(win32_base, 'Debug', pdbf),
                          nsis_dests['lib_win32_debug'])
-            shutil.copy2(os.path.join('build', 'Win32', 'source', 'RelWithDebInfo', lib),
+            shutil.copy2(os.path.join(win32_base, 'RelWithDebInfo', lib),
                          nsis_dests['lib_win32_relwithdebinfo'])
-            src1 = os.path.join('build', 'Win32', 'source', 'RelWithDebInfo', pdb)
-            src2 = os.path.join('build', 'Win32', 'ansakString.dir',
-                                'source', 'RelWithDebInfo', pdb)
-            shutil.copy2(src1 if os.path.isfile(src1) else src2,
+            shutil.copy2(os.path.join(win32_base, 'RelWithDebInfo', pdbf),
                          nsis_dests['lib_win32_relwithdebinfo'])
-            shutil.copy2(os.path.join('build', 'Win32', 'source', 'MinSizeRel', lib),
+            shutil.copy2(os.path.join(win32_base, 'MinSizeRel', lib),
                          nsis_dests['lib_win32_minsizerel'])
 
-            shutil.copy2(os.path.join('build', 'x64', 'source', 'Release', lib),
+            x64_base = os.path.join('build', 'x64', 'source')
+            if sub_dir is not None:
+                x64_base = os.path.join(x64_base, sub_dir)
+            shutil.copy2(os.path.join(x64_base, 'Release', lib),
                          nsis_dests['lib_x64_release'])
-            shutil.copy2(os.path.join('build', 'x64', 'source', 'Debug', lib),
+            shutil.copy2(os.path.join(x64_base, 'Debug', lib),
                          nsis_dests['lib_x64_debug'])
-            shutil.copy2(os.path.join('build', 'x64', 'source', 'Debug', pdb),
+            shutil.copy2(os.path.join(x64_base, 'Debug', pdbf),
                          nsis_dests['lib_x64_debug'])
-            shutil.copy2(os.path.join('build', 'x64', 'source', 'RelWithDebInfo', lib),
+            shutil.copy2(os.path.join(x64_base, 'RelWithDebInfo', lib),
                          nsis_dests['lib_x64_relwithdebinfo'])
-            src1 = os.path.join('build', 'x64', 'source', 'RelWithDebInfo', pdb)
-            src2 = os.path.join('build', 'x64', 'ansakString.dir',
-                                'source', 'RelWithDebInfo', pdb)
-            shutil.copy2(src1 if os.path.isfile(src1) else src2,
+            shutil.copy2(os.path.join(x64_base, 'RelWithDebInfo', pdbf),
                          nsis_dests['lib_x64_relwithdebinfo'])
-            shutil.copy2(os.path.join('build', 'x64', 'source', 'MinSizeRel', lib),
+            shutil.copy2(os.path.join(x64_base, 'MinSizeRel', lib),
                          nsis_dests['lib_x64_minsizerel'])
 
         # create the install set, move it to ./build

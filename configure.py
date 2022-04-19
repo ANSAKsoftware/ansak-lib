@@ -54,9 +54,6 @@ import pathlib
 import re
 from subprocess import STDOUT, PIPE
 import subprocess
-import urllib.request
-import hashlib
-import shutil
 
 called_by = 'python'
 compiler = None
@@ -130,7 +127,7 @@ def find_sqlite_root(loc):
     lib_win32 = os.path.join(loc, 'lib', 'Win32', SQLITE_LIB)
     lib_x64 = os.path.join(loc, 'lib', 'x64', SQLITE_LIB)
     if (os.path.isfile(inc_header_1) and os.path.isfile(inc_header_2) and
-        os.path.isfile(lib_win32) and os.path.isfile(lib_x64)):
+       os.path.isfile(lib_win32) and os.path.isfile(lib_x64)):
         return loc
 
     message = "SQLite3 headers, with Win32 and x64 libraries were not at {}. "
@@ -222,8 +219,6 @@ def main(argv=sys.argv):
         compiler = None
 
     generator = find_generator()
-
-    sqlite_root = find_sqlite_root(args.sqlite_root)
 
     make_nsis = find_make_nsis(args.make_nsis)
 
