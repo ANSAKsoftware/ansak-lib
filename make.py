@@ -483,7 +483,7 @@ class Maker:
 
         # create the install set, move it to ./build
         def run_nsis():
-            return Proc(CMD, C, MAKE_NSIS, 'ansak-string.nsi',
+            return Proc(CMD, C, MAKE_NSIS, 'ansak-lib.nsi',
                         cwd=nsis_dests['nsis']).run()
 
         run_or_die(run_nsis)

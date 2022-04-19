@@ -53,7 +53,7 @@
 
 Name "ANSAK Library"
 !Include ansakVersion.nsh
-Outfile "ansak-setup.exe"
+Outfile "ansak-lib-setup.exe"
 RequestExecutionLevel admin
 InstallDir C:\ProgramData
 
