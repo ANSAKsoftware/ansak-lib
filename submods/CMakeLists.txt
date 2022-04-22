@@ -33,8 +33,12 @@
 #
 ###########################################################################
 
-if( UNIX )
+set( INSTALL_GTEST OFF )
+set( INSTALL_GMOCK OFF )
+if( APPLE )
     add_compile_options( -Wno-error -Wno-uninitialized )
+elseif( UNIX )
+    add_compile_options( -Wno-error -Wno-maybe-uninitialized )
 endif()
 
 # bring in google_test
