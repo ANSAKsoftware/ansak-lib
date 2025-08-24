@@ -33,8 +33,6 @@
 #
 ###########################################################################
 
-cmake_minimum_required(VERSION 3.1)
-
 set( _target integration-sqlite )
 set( _targetAsTest sqliteIntegrationTest )
 set( _targetPrivateLibs ansakSqlite fileTools file primitives "${ANSAK_STRING_LIB}" osLayer )
